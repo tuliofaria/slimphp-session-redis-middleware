@@ -1,4 +1,7 @@
 {
   "name": "tuliofaria/slimphp-session-redis-middleware",
-  "description": "Middleware to use Redis as your PHP Session store in SlimPHP"
+  "description": "Middleware to use Redis as your PHP Session store in SlimPHP",
+  "autoload": {
+        "psr-4": {"tuliofaria": "Slim/Middleware/"}
+    }
 }
