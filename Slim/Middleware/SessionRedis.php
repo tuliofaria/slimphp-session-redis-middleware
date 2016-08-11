@@ -13,7 +13,7 @@
  * @depends  phpredis(https://github.com/nicolasff/phpredis)
  * @version  0.3
  */
-class Slim_Middleware_SessionRedis extends Slim_Middleware
+class Slim_Middleware_SessionRedis
 {
 	// stores settings
 	protected $settings;
@@ -33,9 +33,10 @@ class Slim_Middleware_SessionRedis extends Slim_Middleware
 	 */
 	public function __construct( $settings = array() )
 	{
+		
 		// A neat way of doing setting initialization with default values
 		$this->settings = array_merge(array(
-			'session.name'		=> 'slim_session',
+			'session.name'		=> 'tynsess',
 			'session.id'		=> '',
 			'session.expires'	=> ini_get('session.gc_maxlifetime'),
 			'cookie.lifetime'	=> 0,
@@ -73,22 +74,24 @@ class Slim_Middleware_SessionRedis extends Slim_Middleware
 	}
 
 	/**
-	 * call
+	 * __invoke
 	 *
 	 * slim imposed method, must call $this->next->call() or the middleware will stop in its tracks
 	 *
 	 * @return void
 	 */
-	public function call()
-	{
+	public function __invoke($request, $response, $next){
 
-		session_id($this->settings['session.id']);
-
-		// start our session
-		session_start();
-		// tell slim it's ok to continue!
-		$this->next->call();
-	}
+		$id = session_id();
+		if(empty($id)){
+			session_start();
+		}else{
+			//session_id($this->settings['session.id']);
+			session_id($id);
+		}
+        $response = $next($request, $response);
+        return $response;
+    }
 
 	/**
 	 * open
