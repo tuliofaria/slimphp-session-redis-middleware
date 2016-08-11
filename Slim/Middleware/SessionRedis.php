@@ -43,7 +43,8 @@ class Slim_Middleware_SessionRedis
 			'cookie.path'		=> '/',
 			'cookie.domain'		=> '',
 			'cookie.secure'		=> false,
-			'cookie.httponly'	=> true
+			'cookie.httponly'	=> true,
+			'redis.server'		=> '127.0.0.1'
 		), $settings);
 
 		// if the setting for the expire is a string convert it to an int
@@ -103,7 +104,7 @@ class Slim_Middleware_SessionRedis
 	public function open( $session_path, $session_name )
 	{
 		$this->redis = new Redis();
-		$this->redis->pconnect('127.0.0.1', 6379, 2);
+		$this->redis->pconnect($this->settings["redis.server"], 6379, 2);
 		//$this->redis->select($session_name);
 		return true;
 	}
@@ -196,4 +197,3 @@ class Slim_Middleware_SessionRedis
 		session_write_close();
 	}
 }
-?>
