@@ -197,3 +197,4 @@ class Slim_Middleware_SessionRedis
 		session_write_close();
 	}
 }
+?>
